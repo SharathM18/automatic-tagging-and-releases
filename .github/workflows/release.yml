@@ -1,4 +1,4 @@
-name: Automatic Release
+name: Release
 
 on:
   push:
@@ -7,13 +7,15 @@ on:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -21,22 +23,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20"
 
-      - name: Install Semantic Release
+      - name: Install dependencies
         run: |
-          npm install -g semantic-release \
+          npm install -D semantic-release \
           @semantic-release/commit-analyzer \
           @semantic-release/release-notes-generator \
           @semantic-release/changelog \
           @semantic-release/github
 
-      - name: Run Release
+      - name: Run semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: semantic-release
-
-
-
-
-
+        run: npx semantic-release
