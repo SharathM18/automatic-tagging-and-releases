@@ -1,3 +1,10 @@
+name: Automatic Release
+
+on:
+  push:
+    branches:
+      - main
+
 permissions:
   contents: write
 
@@ -6,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -16,16 +23,20 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Install Semantic Release
         run: |
-          npm install semantic-release \
+          npm install -g semantic-release \
           @semantic-release/commit-analyzer \
           @semantic-release/release-notes-generator \
+          @semantic-release/changelog \
           @semantic-release/github
 
-      - name: Run semantic-release
+      - name: Run Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-.github/workflows/release.yml [unix] (11:08 12/03/2026)                                                                      31,35 Bot
--- INSERT --
+        run: semantic-release
+
+
+
+
+
